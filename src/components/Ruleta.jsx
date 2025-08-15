@@ -55,7 +55,13 @@ export default function Ruleta({
       wheel.removeEventListener("animationend", onEnd);
       setGirando(false);
 
-      // 🎵 Reproducir sonido de final + confeti (confeti lo manejas en SpinWheel.jsx con premioFinal)
+      // ⏹️ Detener audio de giro
+      if (spinSoundRef.current) {
+        spinSoundRef.current.pause();
+        spinSoundRef.current.currentTime = 0; // opcional, lo reinicia
+      }
+
+      // 🎵 Reproducir sonido de final
       if (endSoundRef.current) {
         endSoundRef.current.currentTime = 0;
         endSoundRef.current.play();
@@ -63,8 +69,8 @@ export default function Ruleta({
 
       onFinish(premios[idx], idx);
     };
-    wheel.addEventListener("animationend", onEnd);
-  };
+        wheel.addEventListener("animationend", onEnd);
+      };
 
   return (
     <div className="ruleta-wrapper">
