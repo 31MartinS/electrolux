@@ -69,8 +69,8 @@ export default function Ruleta({
   return (
     <div className="ruleta-wrapper">
       {/* elementos de audio ocultos */}
-      <audio ref={spinSoundRef} src="/audio/ruleta.mp3" preload="auto" />
-      <audio ref={endSoundRef} src="/audio/ding.mp3" preload="auto" />
+      <audio ref={spinSoundRef} src="/audio/rulet.mp3" preload="auto" />
+      <audio ref={endSoundRef} src="/audio/win.mp3" preload="auto" />
 
       <div className="ruleta-indicador" aria-hidden />
       <div className="ruleta" ref={wheelRef} style={{ backgroundImage: gradiente }}>
