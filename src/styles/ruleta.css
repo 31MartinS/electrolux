@@ -1,0 +1,160 @@
+/* ====== SPIN WHEEL / RULETA ====== */
+
+.ruleta-wrapper {
+  position: relative;           /* para posicionar el indicador */
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+}
+
+/* Indicador superior (punta hacia abajo) */
+.ruleta-indicador {
+  position: absolute;
+  top: -8px;                    /* toca el borde del aro */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 24px solid #cfd4da;  /* gris claro */
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,.45));
+  z-index: 3;
+}
+
+/* Disco de la ruleta */
+.ruleta {
+  --size: 360px;
+  --border: 8px;
+  --target-rotation: 0deg;
+
+  /* Distancia desde el centro para ubicar las etiquetas dentro del sector */
+  --label-padding: 36px;                          /* + grande = más adentro */
+  --label-radius: calc(var(--size) / 2 - var(--label-padding));
+
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  border: var(--border) solid #cfd4da;            /* aro gris claro */
+  box-shadow: 0 10px 30px rgba(0,0,0,.45), inset 0 0 20px rgba(0,0,0,.25);
+  overflow: hidden;
+  background: #0C2340;                            /* fallback si no carga el gradiente */
+  transform: rotate(0deg);
+}
+
+/* Líneas radiales suaves para separar sectores */
+.ruleta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-conic-gradient(
+      from 0deg,
+      rgba(255,255,255,.20) 0deg 1deg,
+      transparent 1deg 60deg
+    );
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+/* Bisel/aros internos sutiles */
+.ruleta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 0 2px rgba(255,255,255,.12),
+    inset 0 0 0 6px rgba(0,0,0,.15);
+  pointer-events: none;
+}
+
+/* Animación de giro */
+.ruleta.spin {
+  animation: giro 4s cubic-bezier(.18,.7,.1,1) forwards;
+}
+@keyframes giro {
+  to { transform: rotate(var(--target-rotation)); }
+}
+
+/* Etiquetas dentro del sector (centradas por porción) */
+.ruleta-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: 50% 50%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Texto de cada premio */
+.ruleta-label-text {
+  min-width: 100px;                      /* ayuda a centrar visualmente */
+  max-width: 140px;
+  text-align: center;
+  font: 700 12px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Arial;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0,0,0,.6);
+  padding: 6px 8px;
+  background: rgba(0,0,0,.22);
+  border-radius: 8px;
+  backdrop-filter: blur(2px);
+}
+
+/* Centro con logo */
+.ruleta-hub {
+  position: absolute;
+  width: 86px; 
+  height: 86px;
+  border-radius: 50%;
+  background: #cfd4da;                     /* disco gris */
+  top: 50%; 
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 6px 16px rgba(0,0,0,.35), inset 0 2px 10px rgba(0,0,0,.15);
+  border: 4px solid #0C2340;               /* aro interno azul */
+  display: grid; 
+  place-items: center;
+  z-index: 2;
+}
+.ruleta-hub img {
+  width: 52px; 
+  height: 52px; 
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.25));
+}
+
+/* Botón de acción */
+.ruleta-boton {
+  padding: 12px 20px;
+  border-radius: 12px;
+  background: #cfd4da;
+  color: #0C2340;
+  border: none;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .08s ease, box-shadow .2s ease, opacity .2s;
+  box-shadow: 0 6px 18px rgba(0,0,0,.25);
+}
+.ruleta-boton:disabled { 
+  opacity: .6; 
+  cursor: not-allowed; 
+}
+.ruleta-boton:hover:not(:disabled) { 
+  transform: translateY(-1px); 
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 480px) {
+  .ruleta {
+    --size: 300px;
+    --label-padding: 30px;        /* recalcula el radio automáticamente */
+  }
+  .ruleta-label-text { 
+    font-size: 11px; 
+    min-width: 90px; 
+  }
+}
