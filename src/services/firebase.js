@@ -11,13 +11,14 @@ import {
 } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBVdQe3wCl7Myq_yd_Q_SdSn4JKYhLW48A",
-  authDomain: "electrolux-bcf6e.firebaseapp.com",
-  projectId: "electrolux-bcf6e",
-  storageBucket: "electrolux-bcf6e.firebasestorage.app",
-  messagingSenderId: "207869138022",
-  appId: "1:207869138022:web:922a8c405f3087fcefc9a7"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 }
+
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
