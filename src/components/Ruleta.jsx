@@ -11,10 +11,13 @@ export default function Ruleta({
   const wheelRef = useRef(null);
   const [girando, setGirando] = useState(false);
 
+  // refs para los sonidos
+  const spinSoundRef = useRef(null);
+  const endSoundRef = useRef(null);
+
   const n = Math.max(1, premios.length);
   const delta = 360 / n;
 
-  // Gradiente por sectores (azules alternados)
   const gradiente = useMemo(() => {
     if (n === 0) return undefined;
     const pal = ["#0C2340", "#5A7184"];
@@ -31,10 +34,13 @@ export default function Ruleta({
     setGirando(true);
     onStart();
 
-    // índice ganador
-    const idx = Math.floor(Math.random() * n);
+    // 🎵 Reproducir sonido de giro
+    if (spinSoundRef.current) {
+      spinSoundRef.current.currentTime = 0;
+      spinSoundRef.current.play();
+    }
 
-    // Alinear el centro del sector ganador con el indicador superior (triángulo apuntando hacia abajo)
+    const idx = Math.floor(Math.random() * n);
     const objetivo = 360 * 6 + (360 - (idx * delta + delta / 2));
 
     const wheel = wheelRef.current;
@@ -48,6 +54,13 @@ export default function Ruleta({
     const onEnd = () => {
       wheel.removeEventListener("animationend", onEnd);
       setGirando(false);
+
+      // 🎵 Reproducir sonido de final + confeti (confeti lo manejas en SpinWheel.jsx con premioFinal)
+      if (endSoundRef.current) {
+        endSoundRef.current.currentTime = 0;
+        endSoundRef.current.play();
+      }
+
       onFinish(premios[idx], idx);
     };
     wheel.addEventListener("animationend", onEnd);
@@ -55,22 +68,19 @@ export default function Ruleta({
 
   return (
     <div className="ruleta-wrapper">
-      {/* Indicador (punta hacia abajo) */}
-      <div className="ruleta-indicador" aria-hidden />
+      {/* elementos de audio ocultos */}
+      <audio ref={spinSoundRef} src="/audio/ruleta.mp3" preload="auto" />
+      <audio ref={endSoundRef} src="/audio/ding.mp3" preload="auto" />
 
-      {/* Disco */}
+      <div className="ruleta-indicador" aria-hidden />
       <div className="ruleta" ref={wheelRef} style={{ backgroundImage: gradiente }}>
-        {/* Etiquetas dentro de cada porción */}
         {premios.map((p, i) => {
-          const rot = i * delta + delta / 2; // centro del sector
+          const rot = i * delta + delta / 2;
           return (
             <div
               key={`${p}-${i}`}
               className="ruleta-label"
               style={{
-                // 1) giramos al centro del sector
-                // 2) empujamos la etiqueta hacia afuera siguiendo el radio
-                // 3) “des-rotamos” el texto para que quede horizontal
                 transform: `rotate(${rot}deg) translateY(calc(-1 * var(--label-radius))) rotate(${-rot}deg)`,
               }}
             >
@@ -78,14 +88,8 @@ export default function Ruleta({
             </div>
           );
         })}
-
-        {/* Logo central */}
         <div className="ruleta-hub">
-          <img
-            src={logoSrc}
-            alt="Logo"
-            onError={(e) => (e.currentTarget.style.display = "none")}
-          />
+          <img src={logoSrc} alt="Logo" onError={(e) => (e.currentTarget.style.display = "none")} />
         </div>
       </div>
 
