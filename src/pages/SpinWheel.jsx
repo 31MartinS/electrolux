@@ -3,15 +3,15 @@ import { useNavigate } from "react-router-dom";
 import Confetti from "react-confetti";
 import bgDesktop from '../assets/images/Desktop Wallpaper Spinwheel.svg';
 import bgMobile from '../assets/images/Mobile Wallpaper Spinwheel.svg';
-import { ChefHat, Ticket, Wine, Speaker, CupSoda, Gift, PackageOpen, Sparkles } from 'lucide-react';
+import { Refrigerator, Ticket, Wine, Speaker, CupSoda, Gift, PackageOpen, Sparkles } from 'lucide-react';
 
 /* ─── Configuración de Premios ────────────────────────── */
 const PRIZE_INFO = {
-  "Cocina": { icon: ChefHat, color: "#011E41" },
-  "Orden de compra $25": { icon: Ticket, color: "#0A4F8F" },
-  "Botella de vino": { icon: Wine, color: "#5E102B" },
-  "Parlante inalámbrico": { icon: Speaker, color: "#2B3C4D" },
-  "Tomatodo": { icon: CupSoda, color: "#026B8E" },
+  "Minibar": { icon: Refrigerator, color: "#FFC107" },
+  "Orden de compra $25": { icon: Ticket, color: "#4CAF50" },
+  "Botella de vino": { icon: Wine, color: "#E91E63" },
+  "Parlante inalámbrico": { icon: Speaker, color: "#00BCD4" },
+  "Tomatodo": { icon: CupSoda, color: "#FF9800" },
 };
 
 function getPrizeInfo(premio) {

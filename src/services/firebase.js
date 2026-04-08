@@ -29,11 +29,11 @@ export { db };
 
 export function generarPremioAleatorio() {
   const rand = Math.random() * 100;
-  if (rand < 5) return "Cocina"; // 5%
-  if (rand < 20) return "Orden de compra $25"; // 15% (5 a 20)
-  if (rand < 40) return "Botella de vino"; // 20% (20 a 40)
-  if (rand < 60) return "Parlante inalámbrico"; // 20% (40 a 60)
-  return "Tomatodo"; // 40% (60 a 100)
+  if (rand < 3) return "Minibar"; // 3%
+  if (rand < 8) return "Orden de compra $25"; // 5% (3 a 8)
+  if (rand < 18) return "Botella de vino"; // 10% (8 a 18)
+  if (rand < 38) return "Parlante inalámbrico"; // 20% (18 a 38)
+  return "Tomatodo"; // 62% (38 a 100)
 }
 
 export async function guardarParticipante({ email, nombre, cedula, celular, aceptaTerminos, aceptaMarketing }) {
