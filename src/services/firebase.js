@@ -3,11 +3,13 @@ import { initializeApp } from "firebase/app";
 import {
   getFirestore,
   doc,
-  getDoc,          // ← IMPORTA ESTO
+  getDoc,
   setDoc,
   serverTimestamp,
   collection,
-  addDoc,
+  query,
+  where,
+  getDocs
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -19,12 +21,26 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID
 }
 
-
+// Inicialización estricta para producción. Fallará útilmente si no hay variables de entorno en Vercel.
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+const db = getFirestore(app);
 
-export async function guardarParticipante({ email, nombre, cedula, celular }) {
+export { db };
+
+export function generarPremioAleatorio() {
+  const rand = Math.random() * 100;
+  if (rand < 5) return "Cocina"; // 5%
+  if (rand < 20) return "Orden de compra $25"; // 15% (5 a 20)
+  if (rand < 40) return "Botella de vino"; // 20% (20 a 40)
+  if (rand < 60) return "Parlante inalámbrico"; // 20% (40 a 60)
+  return "Tomatodo"; // 40% (60 a 100)
+}
+
+export async function guardarParticipante({ email, nombre, cedula, celular, aceptaTerminos, aceptaMarketing }) {
+  const premioAsignado = generarPremioAleatorio();
+  
   if (!email) throw new Error("Email requerido");
+  
   const ref = doc(db, "participantes", email);
   await setDoc(
     ref,
@@ -33,6 +49,10 @@ export async function guardarParticipante({ email, nombre, cedula, celular }) {
       nombre: nombre ?? null,
       cedula: cedula ?? null,
       celular: celular ?? null,
+      aceptaTerminos: !!aceptaTerminos,
+      aceptaMarketing: !!aceptaMarketing,
+      premio: premioAsignado,
+      estadoPremio: "pendiente",
       updatedAt: serverTimestamp(),
       createdAt: serverTimestamp(),
     },
@@ -42,42 +62,43 @@ export async function guardarParticipante({ email, nombre, cedula, celular }) {
 }
 
 export async function obtenerPremio(email) {
-  if (!email) return null;
-  const ref = doc(db, "participantes", email);
-  const snap = await getDoc(ref);   // ← YA DEFINIDO
-  if (!snap.exists()) return null;
-  return snap.data()?.premio ?? null;
-}
-
-export async function asignarPremio(email, premio, prizeIndex) {
-  if (!email) throw new Error("Email requerido para asignar premio");
-  if (!premio) throw new Error("Premio inválido");
-
+  if (!email) return { premio: null, estadoPremio: null };
   const ref = doc(db, "participantes", email);
   const snap = await getDoc(ref);
+  if (!snap.exists()) return { premio: null, estadoPremio: null };
+  
+  return {
+    premio: snap.data()?.premio ?? null,
+    estadoPremio: snap.data()?.estadoPremio ?? null
+  };
+}
 
-  if (snap.exists() && snap.data()?.premio) {
-    return { ok: true, yaTenia: true, premio: snap.data().premio };
-  }
+export async function revelarPremio(email) {
+  if (!email) throw new Error("Email requerido para revelar premio");
 
+  const ref = doc(db, "participantes", email);
   await setDoc(
     ref,
     {
-      email,
-      premio,
-      prizeIndex: Number.isFinite(prizeIndex) ? prizeIndex : null,
-      spinAt: serverTimestamp(),
+      estadoPremio: "revelado",
       updatedAt: serverTimestamp(),
     },
     { merge: true }
   );
 
-  await addDoc(collection(db, "spins"), {
-    email,
-    premio,
-    prizeIndex: Number.isFinite(prizeIndex) ? prizeIndex : null,
-    at: serverTimestamp(),
-  });
+  return { ok: true };
+}
 
-  return { ok: true, yaTenia: false, premio };
+export async function validarParticipanteExistente(email, cedula) {
+  if (!email || !cedula) return { existe: false };
+  
+  const refEmail = doc(db, "participantes", email);
+  const snapEmail = await getDoc(refEmail);
+  if (snapEmail.exists()) return { existe: true, field: 'correo' };
+
+  const qCedula = query(collection(db, "participantes"), where("cedula", "==", cedula));
+  const snapCedula = await getDocs(qCedula);
+  if (!snapCedula.empty) return { existe: true, field: 'cédula' };
+
+  return { existe: false };
 }
