@@ -49,6 +49,7 @@ export default function Formulario() {
   const [loading, setLoading] = useState(false)
   const [ok, setOk] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
+  const [showTermsModal, setShowTermsModal] = useState(false)
 
   /* ── Validaciones ── */
   const validarNombre  = (v) => /^([A-Za-zÁÉÍÓÚáéíóúÑñ]{2,})(\s[A-Za-zÁÉÍÓÚáéíóúÑñ]{2,})+$/.test(v.trim())
@@ -263,10 +264,58 @@ export default function Formulario() {
           )}
 
           <p className="frm-legal">
-            Al registrarte, aceptas los <a href="https://www.electrolux.com.ec/tyc-campanas" target="_blank" rel="noopener noreferrer">Términos y Condiciones</a> de la promoción. La asignación de premios se realiza mediante un sistema de probabilidades. Promoción válida hasta agotar stock. Aplican restricciones.
+            Al registrarte, aceptas los <a href="#" onClick={(e) => { e.preventDefault(); setShowTermsModal(true); }}>Términos y Condiciones</a> de la promoción. La asignación de premios se realiza mediante un sistema de probabilidades. Promoción válida hasta agotar stock. Aplican restricciones.
           </p>
         </form>
       </div>
+
+      {/* Modal Términos y Condiciones */}
+      {showTermsModal && (
+        <div className="terms-modal-overlay" onClick={() => setShowTermsModal(false)}>
+          <div className="terms-modal-content" onClick={e => e.stopPropagation()}>
+            <button className="terms-modal-close" onClick={() => setShowTermsModal(false)} aria-label="Cerrar">&times;</button>
+            <h2>Políticas y Condiciones de la Promoción – “Cajas Virtuales”</h2>
+            
+            <h3>1. Mecánica de Participación</h3>
+            <p>1.1. Cada participante tendrá acceso a un conjunto de cajas virtuales, cada una conteniendo un premio específico.</p>
+            <p>1.2. El participante deberá seleccionar una caja de manera libre y voluntaria.</p>
+            <p>1.3. Al seleccionar una caja, el participante acepta el premio asignado a dicha caja.</p>
+            <p>1.4. Después de la elección, se mostrará un pantallazo de 5 segundos revelando el contenido del resto de cajas, únicamente con fines informativos y de transparencia.</p>
+
+            <h3>2. Carácter Definitivo de la Elección</h3>
+            <p>2.1. Una vez que el participante revela la caja seleccionada:</p>
+            <ul>
+              <li>No podrá cambiarla,</li>
+              <li>No podrá solicitar el premio de otra caja,</li>
+              <li>No podrá reemplazar su premio por otro artículo.</li>
+            </ul>
+            <p>2.2. El premio asignado es personal e intransferible.</p>
+
+            <h3>3. Naturaleza de los Premios</h3>
+            <p>3.1. Los premios otorgados son físicos o virtuales, según la naturaleza del producto seleccionado.</p>
+            <p>3.2. En ningún caso el premio podrá ser canjeado por dinero, saldo, descuentos o cualquier forma de compensación monetaria.</p>
+            <p>3.3. No es posible solicitar monetización del premio bajo ninguna circunstancia.</p>
+
+            <h3>4. Premios Virtuales – Gift Point</h3>
+            <p>4.1. Para premios otorgados en formato virtual, la orden de compra será generada a través de la aplicación Gift Point.</p>
+            <p>4.2. El premio gestionado por Gift Point es virtual y canjeable únicamente en los locales aliados establecidos por dicha plataforma.</p>
+            <p>4.3. La disponibilidad, validez y condiciones de uso del premio virtual se rigen por las políticas propias de Gift Point.</p>
+
+            <h3>5. Premios Físicos – Electrodomésticos Electrolux</h3>
+            <p>5.1. En caso de que el participante obtenga un electrodoméstico Electrolux como premio:</p>
+            <ul>
+              <li>Electrolux coordinará directamente con el ganador la fecha y lugar de entrega.</li>
+              <li>El plazo máximo para realizar la entrega será de hasta 10 días posteriores a la fecha de participación.</li>
+            </ul>
+            <p>5.2. El ganador deberá proporcionar información veraz y completa para coordinar la entrega (contacto, dirección, disponibilidad).</p>
+            <p>5.3. Electrolux no será responsable de retrasos ocasionados por información incorrecta o falta de respuesta del participante.</p>
+
+            <h3>6. Aceptación de las Condiciones</h3>
+            <p>6.1. La participación en la promoción implica la aceptación total de estas Políticas y Condiciones.</p>
+            <p>6.2. La organización se reserva el derecho de modificar las condiciones en caso de fuerza mayor, garantizando la comunicación oportuna a los participantes.</p>
+          </div>
+        </div>
+      )}
 
       {/* ── Estilos ── */}
       <style>{`
@@ -625,6 +674,112 @@ export default function Formulario() {
           .frm-card { border-radius: 20px; }
           .frm-input-wrap { padding: 9px 12px; gap: 8px; }
           .frm-btn { padding: 13px 16px; }
+        /* Modal de Términos y Condiciones */
+        .terms-modal-overlay {
+          position: fixed;
+          top: 0; left: 0; right: 0; bottom: 0;
+          background: rgba(0, 0, 0, 0.6);
+          backdrop-filter: blur(8px);
+          z-index: 1000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+          animation: frm-fadeIn 0.3s ease;
+        }
+        .terms-modal-content {
+          background: rgba(122, 116, 136, 0.95);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 20px;
+          padding: 30px;
+          max-width: 600px;
+          max-height: 80vh;
+          overflow-y: auto;
+          color: #fff;
+          box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+          font-family: 'ElectroluxSans', system-ui, sans-serif;
+          position: relative;
+          animation: frm-slideUp 0.3s ease;
+          text-align: left;
+        }
+        .terms-modal-close {
+          position: absolute;
+          top: 20px;
+          right: 20px;
+          background: transparent;
+          border: none;
+          color: rgba(255,255,255,0.7);
+          font-size: 28px;
+          line-height: 1;
+          cursor: pointer;
+          transition: color 0.2s;
+        }
+        .terms-modal-close:hover {
+          color: #fff;
+        }
+        .terms-modal-content h2 {
+          margin-top: 0;
+          font-size: 1.4rem;
+          color: #cfd4da;
+          margin-bottom: 20px;
+          padding-right: 30px;
+        }
+        .terms-modal-content h3 {
+          font-size: 1.1rem;
+          color: #6dbf97;
+          margin-top: 24px;
+          margin-bottom: 12px;
+        }
+        .terms-modal-content p, .terms-modal-content ul {
+          font-size: 0.9rem;
+          line-height: 1.6;
+          color: rgba(255,255,255,0.85);
+          margin-bottom: 12px;
+        }
+        .terms-modal-content ul {
+          padding-left: 20px;
+        }
+        .terms-modal-content li {
+          margin-bottom: 6px;
+        }
+        @keyframes frm-fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes frm-slideUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        /* Custom scrollbar for modal */
+        .terms-modal-content::-webkit-scrollbar {
+          width: 8px;
+        }
+        .terms-modal-content::-webkit-scrollbar-track {
+          background: rgba(0,0,0,0.1);
+          border-radius: 4px;
+        }
+        .terms-modal-content::-webkit-scrollbar-thumb {
+          background: rgba(255,255,255,0.3);
+          border-radius: 4px;
+        }
+        .terms-modal-content::-webkit-scrollbar-thumb:hover {
+          background: rgba(255,255,255,0.5);
+        }
+
+        /* Responsive Modal */
+        @media (max-width: 480px) {
+          .terms-modal-content {
+            padding: 24px 20px;
+          }
+          .terms-modal-content h2 {
+            font-size: 1.25rem;
+          }
+          .terms-modal-content h3 {
+            font-size: 1rem;
+          }
+          .terms-modal-content p, .terms-modal-content ul {
+            font-size: 0.85rem;
+          }
         }
       `}</style>
     </div>
