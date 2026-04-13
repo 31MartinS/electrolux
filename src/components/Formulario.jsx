@@ -269,50 +269,82 @@ export default function Formulario() {
         </form>
       </div>
 
-      {/* Modal Términos y Condiciones */}
+      {/* Modal Términos y Condiciones Premium */}
       {showTermsModal && (
         <div className="terms-modal-overlay" onClick={() => setShowTermsModal(false)}>
           <div className="terms-modal-content" onClick={e => e.stopPropagation()}>
-            <button className="terms-modal-close" onClick={() => setShowTermsModal(false)} aria-label="Cerrar">&times;</button>
-            <h2>Políticas y Condiciones de la Promoción – “Cajas Virtuales”</h2>
+            {/* Header Sticky */}
+            <div className="terms-modal-header">
+               <div className="terms-modal-title-wrap">
+                 <span className="terms-modal-icon" aria-hidden="true">📄</span>
+                 <h2>Políticas de la Promoción</h2>
+               </div>
+               <button className="terms-modal-close" onClick={() => setShowTermsModal(false)} aria-label="Cerrar">&times;</button>
+            </div>
             
-            <h3>1. Mecánica de Participación</h3>
-            <p>1.1. Cada participante tendrá acceso a un conjunto de cajas virtuales, cada una conteniendo un premio específico.</p>
-            <p>1.2. El participante deberá seleccionar una caja de manera libre y voluntaria.</p>
-            <p>1.3. Al seleccionar una caja, el participante acepta el premio asignado a dicha caja.</p>
-            <p>1.4. Después de la elección, se mostrará un pantallazo de 5 segundos revelando el contenido del resto de cajas, únicamente con fines informativos y de transparencia.</p>
+            {/* Body scrollable */}
+            <div className="terms-modal-body">
+              <div className="terms-modal-intro">
+                Condiciones exclusivas para “Cajas Virtuales”
+              </div>
 
-            <h3>2. Carácter Definitivo de la Elección</h3>
-            <p>2.1. Una vez que el participante revela la caja seleccionada:</p>
-            <ul>
-              <li>No podrá cambiarla,</li>
-              <li>No podrá solicitar el premio de otra caja,</li>
-              <li>No podrá reemplazar su premio por otro artículo.</li>
-            </ul>
-            <p>2.2. El premio asignado es personal e intransferible.</p>
+              <div className="terms-section">
+                <h3><span className="terms-num">1</span> Mecánica de Participación</h3>
+                <p><strong>1.1.</strong> Cada participante tendrá acceso a un conjunto de cajas virtuales, cada una conteniendo un premio específico.</p>
+                <p><strong>1.2.</strong> El participante deberá seleccionar una caja de manera libre y voluntaria.</p>
+                <p><strong>1.3.</strong> Al seleccionar una caja, el participante acepta el premio asignado a dicha caja.</p>
+                <p><strong>1.4.</strong> Después de la elección, se mostrará un pantallazo de 5 segundos revelando el contenido del resto de cajas, únicamente con fines informativos y de transparencia.</p>
+              </div>
 
-            <h3>3. Naturaleza de los Premios</h3>
-            <p>3.1. Los premios otorgados son físicos o virtuales, según la naturaleza del producto seleccionado.</p>
-            <p>3.2. En ningún caso el premio podrá ser canjeado por dinero, saldo, descuentos o cualquier forma de compensación monetaria.</p>
-            <p>3.3. No es posible solicitar monetización del premio bajo ninguna circunstancia.</p>
+              <div className="terms-section">
+                <h3><span className="terms-num">2</span> Carácter Definitivo de la Elección</h3>
+                <p><strong>2.1.</strong> Una vez que el participante revela la caja seleccionada:</p>
+                <ul>
+                  <li>No podrá cambiarla.</li>
+                  <li>No podrá solicitar el premio de otra caja.</li>
+                  <li>No podrá reemplazar su premio por otro artículo.</li>
+                </ul>
+                <p><strong>2.2.</strong> El premio asignado es personal e intransferible.</p>
+              </div>
 
-            <h3>4. Premios Virtuales – Gift Point</h3>
-            <p>4.1. Para premios otorgados en formato virtual, la orden de compra será generada a través de la aplicación Gift Point.</p>
-            <p>4.2. El premio gestionado por Gift Point es virtual y canjeable únicamente en los locales aliados establecidos por dicha plataforma.</p>
-            <p>4.3. La disponibilidad, validez y condiciones de uso del premio virtual se rigen por las políticas propias de Gift Point.</p>
+              <div className="terms-section">
+                <h3><span className="terms-num">3</span> Naturaleza de los Premios</h3>
+                <p><strong>3.1.</strong> Los premios otorgados son físicos o virtuales, según la naturaleza del producto seleccionado.</p>
+                <p><strong>3.2.</strong> En ningún caso el premio podrá ser canjeado por dinero, saldo, descuentos o cualquier forma de compensación monetaria.</p>
+                <p><strong>3.3.</strong> No es posible solicitar monetización del premio bajo ninguna circunstancia.</p>
+              </div>
 
-            <h3>5. Premios Físicos – Electrodomésticos Electrolux</h3>
-            <p>5.1. En caso de que el participante obtenga un electrodoméstico Electrolux como premio:</p>
-            <ul>
-              <li>Electrolux coordinará directamente con el ganador la fecha y lugar de entrega.</li>
-              <li>El plazo máximo para realizar la entrega será de hasta 10 días posteriores a la fecha de participación.</li>
-            </ul>
-            <p>5.2. El ganador deberá proporcionar información veraz y completa para coordinar la entrega (contacto, dirección, disponibilidad).</p>
-            <p>5.3. Electrolux no será responsable de retrasos ocasionados por información incorrecta o falta de respuesta del participante.</p>
+              <div className="terms-section">
+                <h3><span className="terms-num">4</span> Premios Virtuales – Gift Point</h3>
+                <p><strong>4.1.</strong> Para premios otorgados en formato virtual, la orden de compra será generada a través de la aplicación Gift Point.</p>
+                <p><strong>4.2.</strong> El premio gestionado por Gift Point es virtual y canjeable únicamente en los locales aliados establecidos por dicha plataforma.</p>
+                <p><strong>4.3.</strong> La disponibilidad, validez y condiciones de uso del premio virtual se rigen por las políticas propias de Gift Point.</p>
+              </div>
 
-            <h3>6. Aceptación de las Condiciones</h3>
-            <p>6.1. La participación en la promoción implica la aceptación total de estas Políticas y Condiciones.</p>
-            <p>6.2. La organización se reserva el derecho de modificar las condiciones en caso de fuerza mayor, garantizando la comunicación oportuna a los participantes.</p>
+              <div className="terms-section">
+                <h3><span className="terms-num">5</span> Premios Físicos – Electrodomésticos</h3>
+                <p><strong>5.1.</strong> En caso de que el participante obtenga un electrodoméstico Electrolux como premio:</p>
+                <ul>
+                  <li>Electrolux coordinará directamente con el ganador la fecha y lugar de entrega.</li>
+                  <li>El plazo máximo para realizar la entrega será de hasta 10 días posteriores a la fecha de participación.</li>
+                </ul>
+                <p><strong>5.2.</strong> El ganador deberá proporcionar información veraz y completa para coordinar la entrega (contacto, dirección, disponibilidad).</p>
+                <p><strong>5.3.</strong> Electrolux no será responsable de retrasos ocasionados por información incorrecta o falta de respuesta del participante.</p>
+              </div>
+
+              <div className="terms-section">
+                <h3><span className="terms-num">6</span> Aceptación de las Condiciones</h3>
+                <p><strong>6.1.</strong> La participación en la promoción implica la aceptación total de estas Políticas y Condiciones.</p>
+                <p><strong>6.2.</strong> La organización se reserva el derecho de modificar las condiciones en caso de fuerza mayor, garantizando la comunicación oportuna a los participantes.</p>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="terms-modal-footer">
+              <button type="button" className="terms-modal-btn" onClick={() => setShowTermsModal(false)}>
+                Entendido
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -674,111 +706,268 @@ export default function Formulario() {
           .frm-card { border-radius: 20px; }
           .frm-input-wrap { padding: 9px 12px; gap: 8px; }
           .frm-btn { padding: 13px 16px; }
-        /* Modal de Términos y Condiciones */
+        } /* Cierre de media query max-width: 400px */
+
+        /* =========================================================
+           MODAL DE TÉRMINOS Y CONDICIONES (DISEÑO PREMIUM)
+           ========================================================= */
         .terms-modal-overlay {
           position: fixed;
           top: 0; left: 0; right: 0; bottom: 0;
-          background: rgba(0, 0, 0, 0.6);
-          backdrop-filter: blur(8px);
-          z-index: 1000;
+          background: rgba(10, 15, 25, 0.7);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          z-index: 9999;
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 20px;
-          animation: frm-fadeIn 0.3s ease;
+          padding: 16px;
+          animation: frm-fadeIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         .terms-modal-content {
-          background: rgba(122, 116, 136, 0.95);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          border-radius: 20px;
-          padding: 30px;
-          max-width: 600px;
-          max-height: 80vh;
-          overflow-y: auto;
+          background: linear-gradient(145deg, rgba(45, 40, 55, 0.95) 0%, rgba(20, 24, 34, 0.98) 100%);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 24px;
+          width: 100%;
+          max-width: 620px;
+          max-height: 85vh;
+          display: flex;
+          flex-direction: column;
           color: #fff;
-          box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+          box-shadow: 
+            0 30px 60px rgba(0,0,0,0.6),
+            inset 0 1px 0 rgba(255,255,255,0.1);
           font-family: 'ElectroluxSans', system-ui, sans-serif;
           position: relative;
-          animation: frm-slideUp 0.3s ease;
-          text-align: left;
+          overflow: hidden;
+          animation: frm-slideUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        
+        /* Encabezado Fijo */
+        .terms-modal-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 24px 30px;
+          border-bottom: 1px solid rgba(255,255,255,0.08);
+          background: rgba(255,255,255,0.02);
+          backdrop-filter: blur(10px);
+          flex-shrink: 0;
+        }
+        .terms-modal-title-wrap {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+        .terms-modal-icon {
+          font-size: 1.5rem;
+          background: rgba(109, 191, 151, 0.15);
+          padding: 8px;
+          border-radius: 12px;
+          border: 1px solid rgba(109, 191, 151, 0.3);
+          line-height: 1;
+        }
+        .terms-modal-header h2 {
+          margin: 0;
+          font-size: 1.3rem;
+          font-weight: 700;
+          letter-spacing: 0.5px;
+          background: linear-gradient(90deg, #fff, #cfd4da);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
         }
         .terms-modal-close {
-          position: absolute;
-          top: 20px;
-          right: 20px;
-          background: transparent;
-          border: none;
+          background: rgba(255,255,255,0.05);
+          border: 1px solid rgba(255,255,255,0.1);
           color: rgba(255,255,255,0.7);
-          font-size: 28px;
-          line-height: 1;
+          width: 38px; height: 38px;
+          border-radius: 50%;
+          font-size: 22px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           cursor: pointer;
-          transition: color 0.2s;
+          transition: all 0.2s ease;
+          padding: 0;
+          line-height: 1;
         }
         .terms-modal-close:hover {
-          color: #fff;
+          background: rgba(255,100,100,0.15);
+          color: #ff8080;
+          border-color: rgba(255,100,100,0.3);
+          transform: rotate(90deg);
         }
-        .terms-modal-content h2 {
-          margin-top: 0;
-          font-size: 1.4rem;
-          color: #cfd4da;
-          margin-bottom: 20px;
-          padding-right: 30px;
+
+        /* Cuerpo del Modal */
+        .terms-modal-body {
+          padding: 30px;
+          overflow-y: auto;
+          scrollbar-width: thin;
+          scrollbar-color: rgba(255,255,255,0.2) transparent;
+          flex: 1;
         }
-        .terms-modal-content h3 {
-          font-size: 1.1rem;
+        .terms-modal-body::-webkit-scrollbar {
+          width: 6px;
+        }
+        .terms-modal-body::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .terms-modal-body::-webkit-scrollbar-thumb {
+          background: rgba(255,255,255,0.2);
+          border-radius: 10px;
+        }
+        .terms-modal-body::-webkit-scrollbar-thumb:hover {
+          background: rgba(255,255,255,0.4);
+        }
+
+        .terms-modal-intro {
+          font-size: 1.15rem;
           color: #6dbf97;
-          margin-top: 24px;
-          margin-bottom: 12px;
+          margin-bottom: 24px;
+          font-weight: 600;
+          text-align: center;
+          letter-spacing: 0.5px;
         }
-        .terms-modal-content p, .terms-modal-content ul {
-          font-size: 0.9rem;
+
+        .terms-section {
+          background: rgba(255,255,255,0.03);
+          border: 1px solid rgba(255,255,255,0.05);
+          border-radius: 16px;
+          padding: 20px 24px;
+          margin-bottom: 16px;
+          transition: transform 0.2s, background 0.2s;
+        }
+        .terms-section:hover {
+          background: rgba(255,255,255,0.05);
+          transform: translateY(-2px);
+          border-color: rgba(109, 191, 151, 0.2);
+        }
+
+        .terms-section h3 {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          font-size: 1.05rem;
+          color: #fff;
+          margin-top: 0;
+          margin-bottom: 14px;
+        }
+        .terms-num {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 28px;
+          height: 28px;
+          background: #6dbf97;
+          color: #0C2340;
+          border-radius: 50%;
+          font-size: 0.85rem;
+          font-weight: 800;
+          box-shadow: 0 4px 10px rgba(109, 191, 151, 0.4);
+          flex-shrink: 0;
+        }
+
+        .terms-section p, .terms-section ul {
+          font-size: 0.95rem;
           line-height: 1.6;
-          color: rgba(255,255,255,0.85);
-          margin-bottom: 12px;
+          color: rgba(255,255,255,0.75);
+          margin: 0 0 12px 0;
         }
-        .terms-modal-content ul {
+        .terms-section p:last-child, .terms-section ul:last-child {
+          margin-bottom: 0;
+        }
+        .terms-section strong {
+          color: #cfd4da;
+          font-weight: 600;
+        }
+        .terms-section ul {
           padding-left: 20px;
         }
-        .terms-modal-content li {
+        .terms-section li {
           margin-bottom: 6px;
+          position: relative;
+          list-style-type: none;
+          color: rgba(255,255,255,0.7);
         }
+        .terms-section li::before {
+          content: "—";
+          color: #6dbf97;
+          position: absolute;
+          left: -20px;
+        }
+
+        /* Pie del Modal */
+        .terms-modal-footer {
+          padding: 24px 30px;
+          border-top: 1px solid rgba(255,255,255,0.08);
+          background: rgba(0,0,0,0.15);
+          display: flex;
+          justify-content: flex-end;
+          flex-shrink: 0;
+        }
+        .terms-modal-btn {
+          background: linear-gradient(135deg, #6dbf97, #4ca078);
+          color: #0C2340;
+          border: none;
+          padding: 14px 32px;
+          border-radius: 50px;
+          font-family: 'ElectroluxSans', system-ui, sans-serif;
+          font-weight: 700;
+          font-size: 0.95rem;
+          cursor: pointer;
+          box-shadow: 0 8px 20px rgba(109, 191, 151, 0.3);
+          transition: all 0.2s ease;
+          letter-spacing: 0.5px;
+        }
+        .terms-modal-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 12px 24px rgba(109, 191, 151, 0.4);
+          background: linear-gradient(135deg, #7de0b0, #5ab288);
+        }
+        .terms-modal-btn:active {
+          transform: translateY(0);
+        }
+
+        /* Animaciones */
         @keyframes frm-fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+          from { opacity: 0; backdrop-filter: blur(0px); }
+          to { opacity: 1; backdrop-filter: blur(12px); }
         }
         @keyframes frm-slideUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        /* Custom scrollbar for modal */
-        .terms-modal-content::-webkit-scrollbar {
-          width: 8px;
-        }
-        .terms-modal-content::-webkit-scrollbar-track {
-          background: rgba(0,0,0,0.1);
-          border-radius: 4px;
-        }
-        .terms-modal-content::-webkit-scrollbar-thumb {
-          background: rgba(255,255,255,0.3);
-          border-radius: 4px;
-        }
-        .terms-modal-content::-webkit-scrollbar-thumb:hover {
-          background: rgba(255,255,255,0.5);
+          from { opacity: 0; transform: translateY(40px) scale(0.98); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         /* Responsive Modal */
-        @media (max-width: 480px) {
+        @media (max-width: 600px) {
           .terms-modal-content {
-            padding: 24px 20px;
+            max-height: 90vh;
+            border-radius: 20px;
           }
-          .terms-modal-content h2 {
-            font-size: 1.25rem;
+          .terms-modal-header {
+            padding: 20px 24px;
           }
-          .terms-modal-content h3 {
-            font-size: 1rem;
+          .terms-modal-header h2 {
+            font-size: 1.15rem;
           }
-          .terms-modal-content p, .terms-modal-content ul {
-            font-size: 0.85rem;
+          .terms-modal-body {
+            padding: 20px 24px;
+          }
+          .terms-modal-footer {
+            padding: 20px 24px;
+            justify-content: center;
+          }
+          .terms-modal-btn {
+            width: 100%;
+          }
+          .terms-section {
+            padding: 16px;
+          }
+          .terms-section h3 {
+            font-size: 0.95rem;
+          }
+          .terms-num {
+            width: 24px; height: 24px; font-size: 0.8rem;
           }
         }
       `}</style>
