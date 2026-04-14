@@ -3,24 +3,25 @@ import { useNavigate } from "react-router-dom";
 import Confetti from "react-confetti";
 import bgDesktop from '../assets/images/Desktop Wallpaper Spinwheel.svg';
 import bgMobile from '../assets/images/Mobile Wallpaper Spinwheel.svg';
-import { Refrigerator, Ticket, Wine, Speaker, CupSoda, Gift, PackageOpen, Sparkles } from 'lucide-react';
+import { Tv, Refrigerator, Ticket, Wine, Speaker, Gift, PackageOpen, Sparkles } from 'lucide-react';
 
 /* ─── Configuración de Premios ────────────────────────── */
 const PRIZE_INFO = {
+  "Tv 43 pulgadas": { icon: Tv, color: "#9C27B0" },
   "Minibar": { icon: Refrigerator, color: "#FFC107" },
   "Orden de compra $25": { icon: Ticket, color: "#4CAF50" },
   "Botella de vino": { icon: Wine, color: "#E91E63" },
   "Parlante inalámbrico": { icon: Speaker, color: "#00BCD4" },
-  "Tomatodo": { icon: CupSoda, color: "#FF9800" },
 };
 
 function getPrizeInfo(premio) {
-  return PRIZE_INFO[premio] || { icon: Sparkles, color: "#a8b8c8" };
+  const key = Object.keys(PRIZE_INFO).find(k => k.toLowerCase() === (premio || "").toLowerCase());
+  return PRIZE_INFO[key] || { icon: Sparkles, color: "#a8b8c8" };
 }
 
 // Simulador de premios para las otras cajas (Fake prizes)
 function getRandomFakePrize(exclude) {
-  const keys = Object.keys(PRIZE_INFO).filter(p => p !== exclude);
+  const keys = Object.keys(PRIZE_INFO).filter(p => p.toLowerCase() !== (exclude || "").toLowerCase());
   return keys[Math.floor(Math.random() * keys.length)];
 }
 
@@ -138,8 +139,8 @@ export default function MysteryBoxes() {
       setRevealed(true);
       setOpening(false);
 
-      // Mostrar modal final medio segundo más tarde (antes 1500, ahora 2000)
-      setTimeout(() => setShowModal(true), 2000);
+      // Mostrar modal final más tarde para poder ver los otros premios
+      setTimeout(() => setShowModal(true), 4500);
     }, 1200);
   };
 
