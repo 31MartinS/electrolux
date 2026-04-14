@@ -442,10 +442,10 @@ export default function MysteryBoxes() {
         }
 
         .box-revealed-loser {
-          opacity: 0.35;
-          transform: scale(0.9);
-          filter: grayscale(1);
-          background: rgba(255,255,255,0.02);
+          opacity: 0.8;
+          transform: scale(0.95);
+          filter: grayscale(0.2);
+          background: rgba(255,255,255,0.05);
         }
 
         .sp-hint { margin-top: 10px; color: rgba(1, 30, 65, 0.6); font-weight: 600; font-size: 0.95rem; }
