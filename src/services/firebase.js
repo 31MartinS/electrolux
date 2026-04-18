@@ -9,7 +9,8 @@ import {
   collection,
   query,
   where,
-  getDocs
+  getDocs,
+  runTransaction
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -27,8 +28,15 @@ const db = getFirestore(app);
 
 export { db };
 
-export function generarPremioAleatorio() {
-  const rand = Math.random() * 100;
+export function generarPremioAleatorio(excludePremium = false) {
+  let rand;
+  if (excludePremium) {
+    // Si excluimos premiums, caemos en el otro 90% (del 10 al 100)
+    rand = 10 + (Math.random() * 90);
+  } else {
+    rand = Math.random() * 100;
+  }
+  
   if (rand < 5) return "Tv 43 pulgadas"; // 5% (0 a 5)
   if (rand < 10) return "Minibar"; // 5% (5 a 10)
   if (rand < 30) return "Orden de compra $25"; // 20% (10 a 30)
@@ -37,27 +45,57 @@ export function generarPremioAleatorio() {
 }
 
 export async function guardarParticipante({ email, nombre, cedula, celular, aceptaTerminos, aceptaMarketing }) {
-  const premioAsignado = generarPremioAleatorio();
-  
   if (!email) throw new Error("Email requerido");
   
-  const ref = doc(db, "participantes", email);
-  await setDoc(
-    ref,
-    {
-      email,
-      nombre: nombre ?? null,
-      cedula: cedula ?? null,
-      celular: celular ?? null,
-      aceptaTerminos: !!aceptaTerminos,
-      aceptaMarketing: !!aceptaMarketing,
-      premio: premioAsignado,
-      estadoPremio: "pendiente",
-      updatedAt: serverTimestamp(),
-      createdAt: serverTimestamp(),
-    },
-    { merge: true }
-  );
+  const participanteRef = doc(db, "participantes", email);
+  const stockRef = doc(db, "configuracion", "stock");
+  
+  await runTransaction(db, async (transaction) => {
+    // 1. Asignar premio estadístico inicial
+    let premioFinal = generarPremioAleatorio();
+    const esPremium = premioFinal === "Tv 43 pulgadas" || premioFinal === "Minibar";
+    
+    // 2. Si es premio grande, comprobar stock
+    if (esPremium) {
+      const stockDoc = await transaction.get(stockRef);
+      if (stockDoc.exists()) {
+        const stockData = stockDoc.data();
+        const stockActual = stockData[premioFinal] || 0;
+        
+        if (stockActual > 0) {
+          // Hay stock, descontarlo
+          transaction.update(stockRef, {
+            [premioFinal]: stockActual - 1
+          });
+        } else {
+          // No hay stock de este premio, sortear premio regular base
+          premioFinal = generarPremioAleatorio(true);
+        }
+      } else {
+        // Por seguridad, si no existe el documento asignamos premio base
+        premioFinal = generarPremioAleatorio(true);
+      }
+    }
+    
+    // 3. Escribir datos del participante
+    transaction.set(
+      participanteRef,
+      {
+        email,
+        nombre: nombre ?? null,
+        cedula: cedula ?? null,
+        celular: celular ?? null,
+        aceptaTerminos: !!aceptaTerminos,
+        aceptaMarketing: !!aceptaMarketing,
+        premio: premioFinal,
+        estadoPremio: "pendiente",
+        updatedAt: serverTimestamp(),
+        createdAt: serverTimestamp(),
+      },
+      { merge: true }
+    );
+  });
+
   return { ok: true };
 }
 
